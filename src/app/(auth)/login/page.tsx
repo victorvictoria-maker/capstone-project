@@ -20,6 +20,8 @@ import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
 import { login } from "../../../../serveractions/login";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+// import { resetUserPassword } from "../../../../serveractions/resetpassword";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -44,17 +46,20 @@ const LoginPage = () => {
       login(values, callbackUrl)
         .then((data) => {
           if (data?.error) {
-            // form.reset();
             setError(data?.error);
           }
 
           if (data?.success) {
-            // form.reset();
             setSuccess(data?.success);
+            router.push("/hospitals");
           }
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError("Something went wrong while loggin in!"));
     });
+  };
+
+  const resetPassword = () => {
+    // resetUserPassword();
   };
 
   return (
@@ -103,8 +108,17 @@ const LoginPage = () => {
               )}
             />
           </div>
+          <Link
+            // href='/reset-password'
+            href='/'
+            className='text-blue-600'
+            onClick={resetPassword}
+          >
+            Forgot password
+          </Link>
           <FormError message={error} />
           <FormSuccess message={success} />
+
           <Button type='submit' className='w-full' disabled={isPending}>
             Login
           </Button>

@@ -1,48 +1,24 @@
-// "use client";
+import { redirect } from "next/navigation";
 
-import { useEffect } from "react";
-import { useCurrentUser } from "../../../../hooks/use-current-user";
-import { Button } from "@/components/ui/button";
-import { logout } from "../../../../serveractions/logout";
-// import { signOut } from "next-auth/react";
-import { auth, signOut } from "../../../../auth";
+import { createClient } from "@/utils/supabase/server";
+import { LogoutButton } from "@/components/LogoutButton";
 
-const HospitalsPage = async () => {
-  // const { user } = useCurrentUser();
+const HospitalPage = async () => {
+  const supabase = createClient();
 
-  // useEffect(() => {
-  //   if (!loading && authenticated) {
-  //     console.log(user);
-  //   }
-  // }, [loading, authenticated, user]);
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data?.user) {
+    redirect("/login");
+  }
 
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
-
-  // if (error) {
-  //   return <p>Error loading user data</p>;
-  // }
-
-  const session = await auth();
-
-  if (!session?.user) return null;
+  // console.log(data.user);
 
   return (
     <div>
-      <p>HospitalsPage</p>
-      <p>{session.user.name}</p>
-      <form
-        action={async () => {
-          "use server";
-          await signOut();
-        }}
-      >
-        <Button type='submit'>Logout</Button>
-      </form>
-      {/* <Button onClick={() => signOut()}>Logout</Button> */}
+      <p>Hello {data.user.email}</p>
+      <LogoutButton />
     </div>
   );
 };
 
-export default HospitalsPage;
+export default HospitalPage;
