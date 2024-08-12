@@ -10,10 +10,16 @@ import {
   Collapse,
 } from "@chakra-ui/react";
 import { Hospital } from "../../../types";
-import { FiFilter } from "react-icons/fi";
+import { FiFilter, FiCopy } from "react-icons/fi";
 import { Button } from "../ui/button";
 
-const Hospitallist = ({ allHospitals }: { allHospitals: Hospital[] }) => {
+const Hospitallist = ({
+  allHospitals,
+  userEmail,
+}: {
+  allHospitals: Hospital[];
+  userEmail: string;
+}) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
   const [displayedHospitals, setDisplayedHospitals] = useState<Hospital[]>([]);
@@ -23,6 +29,7 @@ const Hospitallist = ({ allHospitals }: { allHospitals: Hospital[] }) => {
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
 
   const hasMore = displayedHospitals.length < filteredHospitals.length;
 
@@ -59,6 +66,8 @@ const Hospitallist = ({ allHospitals }: { allHospitals: Hospital[] }) => {
     setDisplayedHospitals(newDisplayedHospitals);
   };
 
+  // console.log(userEmail);
+
   const states = useMemo(() => {
     const stateSet = new Set<string>();
     allHospitals.forEach((hospital) => {
@@ -89,6 +98,44 @@ const Hospitallist = ({ allHospitals }: { allHospitals: Hospital[] }) => {
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
     );
+  };
+
+  // generate link and copy to clipboard
+  const generateLinkToShare = (
+    userEmail: string,
+    selectedStates: string[],
+    selectedTypes: string[],
+    searchTerm: string
+  ) => {
+    const query = {
+      state: selectedStates.join(","),
+      type: selectedTypes.join(","),
+      searchTerm,
+      user: userEmail,
+    };
+    const queryString = new URLSearchParams(query).toString();
+    return `${window.location.origin}/hospitals?${queryString}`;
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Link copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy!", err);
+      alert("Failed to copy link.");
+    }
+  };
+
+  const getLink = () => {
+    const link = generateLinkToShare(
+      userEmail,
+      selectedStates,
+      selectedTypes,
+      searchTerm
+    );
+    //  console.log(link);
+    copyToClipboard(link);
   };
 
   const downloadData = () => {
@@ -123,6 +170,7 @@ const Hospitallist = ({ allHospitals }: { allHospitals: Hospital[] }) => {
 
   return (
     <div className='container mx-auto p-4'>
+      {userEmail}
       {/* Toggle Filters Button */}
       <FiFilter />
       <Button
@@ -199,6 +247,14 @@ const Hospitallist = ({ allHospitals }: { allHospitals: Hospital[] }) => {
         </div>
       </Collapse>
 
+      <div className='mt-8'>
+        <h3 className='text-lg font-semibold mb-4'>Share this list</h3>
+        <Stack direction='row' spacing={4}>
+          <Button onClick={getLink}>Copy Link</Button>
+          <FiCopy />
+        </Stack>
+      </div>
+
       {/* Display hospitals */}
       {displayedHospitals.length > 0 && (
         <ul className='hospital-list space-y-4'>
@@ -209,6 +265,9 @@ const Hospitallist = ({ allHospitals }: { allHospitals: Hospital[] }) => {
             >
               <p className='hospital-name text-xl font-bold text-gray-800 mb-2'>
                 {hospital.name}
+              </p>
+              <p className='hospital-name text-xl font-bold text-gray-800 mb-2'>
+                {hospital.phone_number}
               </p>
               <p className='hospital-type text-sm text-gray-600'>
                 <span className='font-semibold text-gray-700'>Type:</span>{" "}

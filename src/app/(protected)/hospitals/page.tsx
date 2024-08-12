@@ -15,13 +15,14 @@ const HospitalPage = async () => {
 
   // console.log(data.user);
   const allHospitals = await fetchHospitalData();
+  const userEmail = data.user.email as string;
 
   return (
     <div>
-      <p>Hello {data.user.email}</p>
+      <p>Hello {userEmail}</p>
       <p className='text-4xl text-purple-700'>Ini is a baby.</p>
       <div className='hospitals-container p-6 bg-gray-100 rounded-lg shadow-md'>
-        <Hospitallist allHospitals={allHospitals} />
+        <Hospitallist allHospitals={allHospitals} userEmail={userEmail} />
       </div>
 
       <LogoutButton />
