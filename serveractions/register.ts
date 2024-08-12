@@ -1,4 +1,5 @@
 "use server";
+
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
@@ -40,14 +41,14 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: error.message };
   }
 
-  // Store additional user information in Prisma
+  // Store user information in Prisma
   await db.user.create({
     data: {
-      id: user.user?.id, // Assuming user ID is returned and mapped
+      id: user.user?.id,
       name,
       email,
-      password: hashedPassword, // Ensure password is hashed if needed
-      role: "USER", // Default role or customize as needed
+      password: hashedPassword,
+      role: "USER",
     },
   });
 

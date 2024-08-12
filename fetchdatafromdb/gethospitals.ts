@@ -15,7 +15,7 @@ export const getAllHealthcareProvider = async () => {
   }
 };
 
-// Fetch paginated hospitals for "Load More" functionality
+// Fetch paginated hospitals
 export async function getAllFilteredHealthcareProvider(
   page: number,
   limit: number

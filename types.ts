@@ -1,12 +1,23 @@
 export interface Hospital {
+  id: number;
   name: string;
-  state?: {
+  address: string;
+  phone_number: string;
+  state: {
+    id: number;
     name: string;
   };
-  tier?: {
+  stateId: number;
+  tier: {
+    id: number;
     name: string;
   };
-  type?: {
+  tierId: number;
+  type: {
+    id: number;
     name: string;
   };
+  typeId: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

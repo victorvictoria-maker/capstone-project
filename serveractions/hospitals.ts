@@ -1,5 +1,3 @@
-// serveractions/hospitals.ts
-
 import {
   getAllFilteredHealthcareProvider,
   getAllHealthcareProvider,
@@ -10,7 +8,7 @@ export async function fetchHospitalData(): Promise<Hospital[]> {
   try {
     const hospitals = await getAllHealthcareProvider();
     if (hospitals) {
-      return hospitals || [];
+      return (hospitals as Hospital[]) || [];
     } else {
       console.log("No hospital found");
       return [];
@@ -21,25 +19,21 @@ export async function fetchHospitalData(): Promise<Hospital[]> {
   }
 }
 
-// Fetch paginated hospital data for "Load More" functionality
+// Fetch paginated hospital
 export async function fetchFilteredHealthcareProvider(
   page: number,
   limit: number
 ): Promise<Hospital[]> {
-  //string
   try {
     const hospitals = await getAllFilteredHealthcareProvider(page, limit);
     if (hospitals) {
-      return hospitals || [];
-      // return "hello vicky";
+      return (hospitals as Hospital[]) || [];
     } else {
       console.log("No more hospitals found");
       return [];
-      // return "error";
     }
   } catch (error) {
     console.log(error);
     return [];
-    // return "error";
   }
 }

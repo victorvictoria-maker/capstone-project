@@ -21,7 +21,6 @@ import { FormSuccess } from "@/components/FormSuccess";
 import { login } from "../../../../serveractions/login";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-// import { resetUserPassword } from "../../../../serveractions/resetpassword";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -56,10 +55,6 @@ const LoginPage = () => {
         })
         .catch(() => setError("Something went wrong while loggin in!"));
     });
-  };
-
-  const resetPassword = () => {
-    // resetUserPassword();
   };
 
   return (
@@ -110,9 +105,8 @@ const LoginPage = () => {
           </div>
           <Link
             // href='/reset-password'
-            href='/'
+            href='/reset-password'
             className='text-blue-600'
-            onClick={resetPassword}
           >
             Forgot password
           </Link>

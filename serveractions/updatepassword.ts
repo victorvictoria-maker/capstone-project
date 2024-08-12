@@ -1,4 +1,3 @@
-// serveractions/updatepassword.ts
 import { createClient } from "@/utils/supabase/server";
 
 export const updatePassword = async (
