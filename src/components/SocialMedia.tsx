@@ -6,19 +6,6 @@ import { FaGithub } from "react-icons/fa";
 import { loginWithOAuth } from "../../serveractions/login";
 
 const SocialMedia = () => {
-  //   const signProvider = async (provider: "google" | "github") => {
-  //     console.log(provider);
-  //     const { error, url } = await loginWithOAuth(provider); // Call server action
-  //     if (error) {
-  //       console.error("Error signing in with provider:", error);
-  //     }
-
-  //     if (url) {
-  //       // Redirect the user to the OAuth provider's login page
-  //       window.location.href = url;
-  //     }
-  //   };
-
   const signProvider = async (provider: "google" | "github") => {
     const { error, url } = await loginWithOAuth(provider);
 

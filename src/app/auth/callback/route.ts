@@ -3,6 +3,8 @@ import { createClient } from "@/utils/supabase/server";
 import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
+  console.log("Auth callback route accessed");
+
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
 
@@ -61,6 +63,7 @@ export async function GET(request: Request) {
 
         // return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/auth?success=AccountCreated`);
         // Redirect to the desired page after successful login
+        console.log("Auth callback sucessffuyl login");
         return NextResponse.redirect(
           `${process.env.NEXT_PUBLIC_APP_URL}${next}`
         );

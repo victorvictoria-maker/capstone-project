@@ -74,7 +74,7 @@ export const loginWithOAuth = async (provider: OAuthProvider) => {
       return { error: error.message || "OAuth login failed!" };
     }
 
-    console.log("data", data);
+    // console.log("data", data);
     return { url: data.url, success: "OAuth login successful!" };
   } catch (error) {
     console.error("Unexpected OAuth Error:", error);
