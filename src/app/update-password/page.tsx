@@ -19,7 +19,7 @@ import { UpdatePasswordSchema } from "../../../schemas";
 import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
 import { updatePassword } from "../../../serveractions/updatepassword";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const UpdatePasswordPage = () => {
   const router = useRouter();
