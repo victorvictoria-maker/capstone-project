@@ -1,44 +1,9 @@
-// import { NextResponse } from "next/server";
-// // The client you created from the Server-Side Auth instructions
-// import { createClient } from "@/utils/supabase/server";
-// import { db } from "@/lib/db";
-
-// export async function GET(request: Request) {
-//   const { searchParams, origin } = new URL(request.url);
-//   const code = searchParams.get("code");
-//   // if "next" is in param, use it as the redirect URL
-//   const next = searchParams.get("next") ?? "/hospitals"; // Default redirect to hospitals
-
-//   if (code) {
-//     const supabase = createClient();
-//     const { data: session, error } = await supabase.auth.exchangeCodeForSession(
-//       code
-//     );
-
-//     if (!error) {
-//       const forwardedHost = request.headers.get("x-forwarded-host"); // original origin before load balancer
-//       const isLocalEnv = process.env.NODE_ENV === "development";
-//       if (isLocalEnv) {
-//         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-//         return NextResponse.redirect(`${origin}${next}`);
-//       } else if (forwardedHost) {
-//         return NextResponse.redirect(`https://${forwardedHost}${next}`);
-//       } else {
-//         return NextResponse.redirect(`${origin}${next}`);
-//       }
-//     }
-//   }
-
-//   // return the user to an error page with instructions
-//   return NextResponse.redirect(`${origin}/auth/auth-code-error`);
-// }
-
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
 
   const next = searchParams.get("next") ?? "/hospitals"; // Default redirect to hospitals
@@ -73,10 +38,12 @@ export async function GET(request: Request) {
         // check if it is a first time user
 
         if (existingUser.createdAt) {
-          return NextResponse.redirect(`${origin}${next}`);
+          return NextResponse.redirect(
+            `${process.env.NEXT_PUBLIC_APP_URL}${next}`
+          );
         } else {
           return NextResponse.redirect(
-            `${origin}/auth?error=There is a user with this email!`
+            `${process.env.NEXT_PUBLIC_APP_URL}/auth?error=There is a user with this email!`
           );
         }
       } else {
@@ -92,16 +59,22 @@ export async function GET(request: Request) {
           },
         });
 
-        // return NextResponse.redirect(`${origin}/auth?success=AccountCreated`);
+        // return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/auth?success=AccountCreated`);
         // Redirect to the desired page after successful login
-        return NextResponse.redirect(`${origin}${next}`);
+        return NextResponse.redirect(
+          `${process.env.NEXT_PUBLIC_APP_URL}${next}`
+        );
       }
     } catch (err) {
       console.error("OAuth Callback Error:", err);
-      return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_APP_URL}/auth/auth-code-error`
+      );
     }
   }
 
   // Return the user to an error page if the code is missing
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+  return NextResponse.redirect(
+    `${process.env.NEXT_PUBLIC_APP_URL}/auth/auth-code-error`
+  );
 }
