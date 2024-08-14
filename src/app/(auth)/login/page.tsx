@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
 import { login } from "../../../../serveractions/login";
@@ -24,7 +24,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import SocialMedia from "@/components/SocialMedia";
 
-const LoginPage = () => {
+const LoginPageContent = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -127,6 +127,14 @@ const LoginPage = () => {
       </Form>
       <SocialMedia />
     </FormWrapper>
+  );
+};
+
+const LoginPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginPageContent />
+    </Suspense>
   );
 };
 

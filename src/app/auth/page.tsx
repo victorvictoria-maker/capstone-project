@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-const LoginErrorPage = () => {
+const LoginErrorPageContent = () => {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   const success = searchParams.get("success");
@@ -18,6 +19,14 @@ const LoginErrorPage = () => {
       {!error && !success && <p>No message provided.</p>}
       <Link href='/login'>Login</Link>
     </div>
+  );
+};
+
+const LoginErrorPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginErrorPageContent />
+    </Suspense>
   );
 };
 
