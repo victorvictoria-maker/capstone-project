@@ -19,8 +19,11 @@ import { UpdatePasswordSchema } from "../../../schemas";
 import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
 import { updatePassword } from "../../../serveractions/updatepassword";
+import { useRouter } from "next/router";
 
 const UpdatePasswordPage = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
     resolver: zodResolver(UpdatePasswordSchema),
     defaultValues: {
@@ -36,17 +39,18 @@ const UpdatePasswordPage = () => {
   const changePassword = (values: z.infer<typeof UpdatePasswordSchema>) => {
     startTransition(() => {
       console.log(values);
-      // updatePassword(values)
-      //   .then((data) => {
-      //     if (data?.error) {
-      //       setError(data?.error);
-      //     }
+      updatePassword(values)
+        .then((data) => {
+          if (data?.error) {
+            setError(data?.error);
+          }
 
-      //     if (data?.success) {
-      //       setSuccess(data?.success);
-      //     }
-      //   })
-      //   .catch(() => setError("Something went wrong!"));
+          if (data?.success) {
+            setSuccess(data?.success);
+            router.push("/login");
+          }
+        })
+        .catch(() => setError("Something went wrong!"));
     });
   };
 
