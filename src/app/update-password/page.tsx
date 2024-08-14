@@ -1,46 +1,109 @@
-// pages/auth/update-password.tsx
-// "use client";
+"use client";
 
-import { useState } from "react";
-import { useRouter } from "next/router";
+import * as z from "zod";
+import { useState, useTransition } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import FormWrapper from "@/components/FormWrapper";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UpdatePasswordSchema } from "../../../schemas";
+import { FormError } from "@/components/FormError";
+import { FormSuccess } from "@/components/FormSuccess";
 import { updatePassword } from "../../../serveractions/updatepassword";
 
 const UpdatePasswordPage = () => {
-  const router = useRouter();
-  const [password, setPassword] = useState("");
+  const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
+    resolver: zodResolver(UpdatePasswordSchema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isPending, startTransition] = useTransition();
 
-  const handleUpdatePassword = async () => {
-    const { query } = router;
-    const { access_token } = query; // Extract the token from the URL
+  const changePassword = (values: z.infer<typeof UpdatePasswordSchema>) => {
+    startTransition(() => {
+      console.log(values);
+      // updatePassword(values)
+      //   .then((data) => {
+      //     if (data?.error) {
+      //       setError(data?.error);
+      //     }
 
-    if (!access_token) {
-      setError("Invalid or missing token.");
-      return;
-    }
-
-    try {
-      await updatePassword(password, access_token as string);
-      setSuccess("Password updated successfully.");
-    } catch (error) {
-      setError("Failed to update password. Please try again.");
-    }
+      //     if (data?.success) {
+      //       setSuccess(data?.success);
+      //     }
+      //   })
+      //   .catch(() => setError("Something went wrong!"));
+    });
   };
 
   return (
-    <div>
-      <h1>Update Password</h1>
-      <input
-        type='password'
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder='Enter your new password'
-      />
-      <button onClick={handleUpdatePassword}>Update Password</button>
-      {error && <p>{error}</p>}
-      {success && <p>{success}</p>}
-    </div>
+    <FormWrapper
+      headerTitle='Change Password'
+      buttonLabel='Back to Login'
+      buttonLink='/login'
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(changePassword)}>
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={isPending}
+                    placeholder='******'
+                    type='password'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='confirmPassword'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={isPending}
+                    placeholder='******'
+                    type='password'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormError message={error} />
+          <FormSuccess message={success} />
+          <Button type='submit' className='w-full mt-4' disabled={isPending}>
+            {isPending ? "Updating..." : "Update Password"}
+          </Button>
+        </form>
+        {success && <p className='text-green-600'>{success}</p>}
+        {error && <p className='text-red-600'>{error}</p>}
+      </Form>
+    </FormWrapper>
   );
 };
 

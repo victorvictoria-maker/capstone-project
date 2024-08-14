@@ -1,15 +1,29 @@
+"use server";
+
 import { createClient } from "@/utils/supabase/server";
+import { UpdatePasswordSchema } from "../schemas";
+import * as z from "zod";
 
 export const updatePassword = async (
-  newPassword: string,
-  accessToken: string
+  values: z.infer<typeof UpdatePasswordSchema>
 ) => {
   const supabase = createClient();
-  const { error } = await supabase.auth.updateUser({
-    password: newPassword,
-  });
+  const { password } = values;
 
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { error } = await supabase.auth.updateUser({ password });
+
+    if (error) {
+      console.error("Reset Password Failed:", error.message);
+      return { error: error.message || "Could not reset passsword!" };
+    } else {
+      console.log("Password reset done successfully!");
+      return { success: "Password reset done successfully!" };
+    }
+  } catch (error) {
+    console.error("Unexpected Error:", error);
+    return {
+      error: "Something went wrong, could not reset password!",
+    };
   }
 };

@@ -1,34 +1,89 @@
-// pages/auth/reset-password.tsx
-// "use client";
+"use client";
 
-import { useState } from "react";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useTransition } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { FormLabel } from "@/components/ui/form";
+
+import { useForm } from "react-hook-form";
+import FormWrapper from "@/components/FormWrapper";
+import { ResetPasswordSchema } from "../../../schemas";
 import { resetPassword } from "../../../serveractions/resetpassword";
+import { FormError } from "@/components/FormError";
+import { FormSuccess } from "@/components/FormSuccess";
 
 const ResetPasswordPage = () => {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
 
-  const handleResetPassword = async () => {
-    try {
-      await resetPassword(email);
-      setMessage("Check your email for a link to reset your password.");
-    } catch (error) {
-      setMessage("Failed to send reset email. Please try again.");
-    }
+  const form = useForm<z.infer<typeof ResetPasswordSchema>>({
+    resolver: zodResolver(ResetPasswordSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const getPasswordResetMail = (value: z.infer<typeof ResetPasswordSchema>) => {
+    startTransition(() => {
+      console.log(value);
+      resetPassword(value.email)
+        .then((data) => {
+          if (data?.error) {
+            setError(data?.error);
+          }
+
+          if (data?.success) {
+            setSuccess(data?.success);
+          }
+        })
+        .catch(() => setError("Something went wrong!"));
+    });
   };
 
   return (
-    <div>
-      <h1>Reset Password</h1>
-      <input
-        type='email'
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder='Enter your email'
-      />
-      <button onClick={handleResetPassword}>Send Reset Link</button>
-      {message && <p>{message}</p>}
-    </div>
+    <FormWrapper
+      headerTitle='Reset Password'
+      buttonLabel='Back to Login'
+      buttonLink='/login'
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(getPasswordResetMail)}>
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={isPending}
+                    placeholder='victorvictor0001@gmail.com'
+                    type='email'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormError message={error} />
+          <FormSuccess message={success} />
+          <Button type='submit' className='w-full mt-4' disabled={isPending}>
+            {isPending ? "Sending..." : "Send Reset Link"}
+          </Button>
+        </form>
+      </Form>
+    </FormWrapper>
   );
 };
 

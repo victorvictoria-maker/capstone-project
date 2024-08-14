@@ -5,6 +5,7 @@ import { LoginSchema } from "../schemas";
 import * as z from "zod";
 import bcrypt from "bcryptjs";
 import { getUserByEmail } from "../fetchdatafromdb/getuser";
+import { redirect } from "next/navigation";
 
 export const login = async (
   values: z.infer<typeof LoginSchema>,
@@ -41,11 +42,42 @@ export const login = async (
     }
 
     console.log("User login successful");
-    return { success: "Login successful!" };
+    // console.log(existingUser);
+    return { success: "Login successful!", userRole: existingUser.role };
   } catch (error) {
     console.error("Unexpected Login Error:", error);
     return {
       error: "Something went wrong, check your credentials and try again!",
     };
+  }
+};
+
+// import { Provider } from "@supabase/supabase-js";
+
+// Define the providers you support
+type OAuthProvider = "google" | "github"; // Add other providers if needed
+
+export const loginWithOAuth = async (provider: OAuthProvider) => {
+  const supabase = createClient();
+  // console.log(provider);
+
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      },
+    });
+
+    if (error) {
+      console.error("Supabase OAuth Error:", error.message);
+      return { error: error.message || "OAuth login failed!" };
+    }
+
+    console.log("data", data);
+    return { url: data.url, success: "OAuth login successful!" };
+  } catch (error) {
+    console.error("Unexpected OAuth Error:", error);
+    return { error: "Something went wrong with OAuth login!" };
   }
 };

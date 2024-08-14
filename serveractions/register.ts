@@ -11,6 +11,7 @@ import { getAllUsers, getUserByEmail } from "../fetchdatafromdb/getuser";
 import { db } from "@/lib/db";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
+  console.log("Register user function called");
   const supabase = createClient();
   const validatedFields = RegisterSchema.safeParse(values);
   if (!validatedFields.success) {
@@ -28,10 +29,11 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const userExist = await getUserByEmail(email);
 
   if (userExist) {
-    return { error: "There is a user with this email!" };
+    return { error: "There is a user with this email, kindly register!" };
   }
 
   // Register user with Supabase
+  console.log("Registering with supabase");
   const { data: user, error } = await supabase.auth.signUp({
     email,
     password,

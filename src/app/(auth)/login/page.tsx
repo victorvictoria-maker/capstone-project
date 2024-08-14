@@ -9,6 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { useForm } from "react-hook-form";
 import { LoginSchema } from "../../../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +22,7 @@ import { FormSuccess } from "@/components/FormSuccess";
 import { login } from "../../../../serveractions/login";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import SocialMedia from "@/components/SocialMedia";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -50,7 +52,12 @@ const LoginPage = () => {
 
           if (data?.success) {
             setSuccess(data?.success);
-            router.push("/hospitals");
+            // console.log(data);
+            if (data.userRole === "ADMIN") {
+              router.push("/admin");
+            } else {
+              router.push("/hospitals");
+            }
           }
         })
         .catch(() => setError("Something went wrong while loggin in!"));
@@ -104,8 +111,8 @@ const LoginPage = () => {
             />
           </div>
           <Link
-            // href='/reset-password'
             href='/reset-password'
+            // href='/login'
             className='text-blue-600'
           >
             Forgot password
@@ -118,6 +125,7 @@ const LoginPage = () => {
           </Button>
         </form>
       </Form>
+      <SocialMedia />
     </FormWrapper>
   );
 };

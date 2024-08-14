@@ -20,6 +20,7 @@ import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
 import { register } from "../../../../serveractions/register";
 import { useRouter } from "next/navigation";
+import SocialMedia from "@/components/SocialMedia";
 
 // #Vicky01
 
@@ -43,10 +44,17 @@ const RegisterPage = () => {
   const onSubmitForm = (values: z.infer<typeof RegisterSchema>) => {
     startTransition(() => {
       register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+        if (data?.error) {
+          setError(data?.error);
+        }
 
-        if (data.success === "Your account has been created successfully!") {
+        if (data?.success) {
+          setSuccess(data?.success);
+        }
+        // setError(data.error);
+        // setSuccess(data.success);
+
+        if (data?.success === "Your account has been created successfully!") {
           router.push("/login");
         }
       });
@@ -142,6 +150,7 @@ const RegisterPage = () => {
           </Button>
         </form>
       </Form>
+      <SocialMedia />
     </FormWrapper>
   );
 };
