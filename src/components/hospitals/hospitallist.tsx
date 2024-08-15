@@ -10,15 +10,21 @@ import {
   Collapse,
 } from "@chakra-ui/react";
 import { Hospital } from "../../../types";
-import { FiFilter, FiCopy } from "react-icons/fi";
+import { FiFilter, FiCopy, FiEdit, FiTrash } from "react-icons/fi";
 import { Button } from "../ui/button";
 
 const Hospitallist = ({
   allHospitals,
   userEmail,
+  isAdmin = false,
+  onEditHospital,
+  onDeleteHospital,
 }: {
   allHospitals: Hospital[];
   userEmail: string;
+  isAdmin?: boolean;
+  onEditHospital?: (hospital: Hospital) => void;
+  onDeleteHospital?: (hospitalId: number) => void;
 }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
@@ -247,13 +253,18 @@ const Hospitallist = ({
         </div>
       </Collapse>
 
-      <div className='mt-8'>
-        <h3 className='text-lg font-semibold mb-4'>Share this list</h3>
-        <Stack direction='row' spacing={4}>
-          <Button onClick={getLink}>Copy Link</Button>
-          <FiCopy />
-        </Stack>
-      </div>
+      {/* Copy button - show only if any filters are applied */}
+      {(selectedStates.length > 0 ||
+        selectedTypes.length > 0 ||
+        searchTerm) && (
+        <div className='mt-8'>
+          <h3 className='text-lg font-semibold mb-4'>Share this list</h3>
+          <Stack direction='row' spacing={4}>
+            <Button onClick={getLink}>Copy Link</Button>
+            <FiCopy />
+          </Stack>
+        </div>
+      )}
 
       {/* Display hospitals */}
       {displayedHospitals.length > 0 && (
@@ -277,6 +288,24 @@ const Hospitallist = ({
                 <span className='font-semibold text-gray-700'>Tier:</span>{" "}
                 {hospital.tier?.name}
               </p>
+
+              {/* Admin Buttons */}
+              {isAdmin && (
+                // <p>Admin</p>
+                <div className='flex space-x-4 mt-4'>
+                  <Button onClick={() => onEditHospital?.(hospital)}>
+                    <FiEdit />
+                    Edit
+                  </Button>
+                  <Button
+                    variant='destructive'
+                    onClick={() => onDeleteHospital?.(hospital.id)}
+                  >
+                    <FiTrash />
+                    Delete
+                  </Button>
+                </div>
+              )}
             </li>
           ))}
         </ul>

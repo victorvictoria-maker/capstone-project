@@ -21,3 +21,31 @@ export interface Hospital {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface State {
+  id: number;
+  name: string;
+}
+
+export interface Tier {
+  id: number;
+  name: string;
+}
+
+export interface Type {
+  id: number;
+  name: string;
+}
+
+export interface DropDownOptions {
+  states: State[];
+  types: Type[];
+  tiers: Tier[];
+}
+
+export interface PopoverProps {
+  hospital: Hospital;
+  onClose: () => void;
+  onSave: (hospital: Hospital) => void;
+  options: DropDownOptions;
+}

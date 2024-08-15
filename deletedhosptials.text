@@ -1,0 +1,82 @@
+1
+address
+: 
+"26 Keffi Road, S.W. Ikoyi"
+createdAt
+: 
+Fri Aug 09 2024 23:47:02 GMT+0100 (West Africa Standard Time) {}
+id
+: 
+2
+location
+: 
+null
+name
+: 
+"Ultimate Eye Clinic - Ikoyi"
+phone_number
+: 
+"08033529747"
+state
+: 
+{id: 25, name: 'Lagos', createdAt: Fri Aug 09 2024 23:46:48 GMT+0100 (West Africa Standard Time), updatedAt: Fri Aug 09 2024 23:46:48 GMT+0100 (West Africa Standard Time)}
+stateId
+: 
+25
+tier
+: 
+{id: 3, name: 'Tier 3', createdAt: Fri Aug 09 2024 23:46:51 GMT+0100 (West Africa Standard Time), updatedAt: Fri Aug 09 2024 23:46:51 GMT+0100 (West Africa Standard Time)}
+tierId
+: 
+3
+type
+: 
+{id: 4, name: 'Dermatological Center', createdAt: Fri Aug 09 2024 23:46:49 GMT+0100 (West Africa Standard Time), updatedAt: Fri Aug 09 2024 23:46:49 GMT+0100 (West Africa Standard Time)}
+typeId
+: 
+4
+updatedAt
+: 
+Fri Aug
+
+
+
+2
+address
+: 
+"Oniru Royal Estate, 6A/B Prince Alaba Oniru Way, Victoria Island Extension"
+createdAt
+: 
+Fri Aug 09 2024 23:47:09 GMT+0100 (West Africa Standard Time) {}
+id
+: 
+4
+location
+: 
+null
+name
+: 
+"Healing Stripes Hospital"
+phone_number
+: 
+"09027798332, 08132764459, 07046183585"
+state
+: 
+{id: 25, name: 'Lagos', createdAt: Fri Aug 09 2024 23:46:48 GMT+0100 (West Africa Standard Time), updatedAt: Fri Aug 09 2024 23:46:48 GMT+0100 (West Africa Standard Time)}
+stateId
+: 
+25
+tier
+: 
+{id: 3, name: 'Tier 3', createdAt: Fri Aug 09 2024 23:46:51 GMT+0100 (West Africa Standard Time), updatedAt: Fri Aug 09 2024 23:46:51 GMT+0100 (West Africa Standard Time)}
+tierId
+: 
+3
+type
+: 
+{id: 1, name: 'Clinic', createdAt: Fri Aug 09 2024 23:46:49 GMT+0100 (West Africa Standard Time), updatedAt: Fri Aug 09 2024 23:46:49 GMT+0100 (West Africa Standard Time)}
+typeId
+: 
+1
+updatedAt
+: 

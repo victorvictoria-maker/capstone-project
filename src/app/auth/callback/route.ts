@@ -110,13 +110,21 @@ export async function GET(request: Request) {
       const name = user_metadata?.full_name;
       const email = user_metadata?.email;
       const image = user_metadata?.picture;
+      // console.log(user_metadata);
       //   check if user exits with that email
       const existingUser = await db.user.findUnique({
         where: { email },
       });
       if (existingUser) {
         // check if it is a first time user
+        // console.log(existingUser);
         if (existingUser.createdAt) {
+          let userRole = existingUser.role;
+          if (userRole === "ADMIN") {
+            return NextResponse.redirect(
+              `${process.env.NEXT_PUBLIC_APP_URL}/admin`
+            );
+          }
           return NextResponse.redirect(
             `${process.env.NEXT_PUBLIC_APP_URL}${next}`
           );
