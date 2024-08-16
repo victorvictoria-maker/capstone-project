@@ -67,3 +67,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+.toastify-success {
+  background-color: #04a5ba;
+  color: #fff;
+}
+
+/* @keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-slideInLeft {
+  display: inline-block;
+  animation: slideInLeft 12s ease-out infinite;
+} */

@@ -118,3 +118,12 @@ export const UpdatePasswordSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
+export const CreateHospitalSchema = z.object({
+  name: z.string().min(1, { message: "Hospital name is required" }),
+  address: z.string().min(1, { message: "Address is required" }),
+  phone_number: z.string().min(1, { message: "Phone number is required" }),
+  stateId: z.number().min(1, { message: "State is required" }),
+  typeId: z.number().min(1, { message: "Type is required" }),
+  tierId: z.number().min(1, { message: "Tier is required" }),
+});

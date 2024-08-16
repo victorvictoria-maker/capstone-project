@@ -49,3 +49,12 @@ export interface PopoverProps {
   onSave: (hospital: Hospital) => void;
   options: DropDownOptions;
 }
+
+export interface CreateHospitalInput {
+  name: string;
+  address: string;
+  phone_number: string;
+  stateId: number;
+  tierId: number;
+  typeId: number;
+}

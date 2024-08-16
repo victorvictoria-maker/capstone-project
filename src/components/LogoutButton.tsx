@@ -8,5 +8,9 @@ export const LogoutButton = () => {
     logout();
   };
 
-  return <Button onClick={logoutUser}>Logout</Button>;
+  return (
+    <Button onClick={logoutUser} variant='green'>
+      Logout
+    </Button>
+  );
 };

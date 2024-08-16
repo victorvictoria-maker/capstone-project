@@ -1,13 +1,16 @@
-import { LogoutButton } from "@/components/LogoutButton";
-import Welcome from "@/markdown/welcome.mdx";
-
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 import AdminHospitalList from "@/components/hospitals/adminHospitalList";
 import { fetchHospitalData } from "../../../../serveractions/hospitals";
+import CreateHospitalForm from "@/components/hospitals/adminCreateHospitalForm";
 
-import { Hospital, Tier, Type } from "../../../../types";
+import HospitalNav from "@/components/hospitals/hospitalNav";
+import HospitalListFooter from "@/components/hospitals/hospitallistfooter";
+
+export const metadata = {
+  title: "Admin Page",
+};
 
 const AdminPage = async () => {
   const supabase = createClient();
@@ -20,21 +23,15 @@ const AdminPage = async () => {
     redirect("/login");
   }
 
-  const adminEmail = data.user?.email ?? "";
-
-  const handleCreateHospital = (
-    newHospital: Omit<Hospital, "id" | "createdAt" | "updatedAt">
-  ) => {
-    console.log("New Hospital Created:", newHospital);
-    // You can handle the new hospital creation here, e.g., send to an API or update state
-  };
+  const email = data.user?.email ?? "";
+  const profilePicture = data.user.user_metadata.avatar_url as string;
 
   return (
     <div>
-      <p>AdminPage</p>
-      <AdminHospitalList allHospitals={allHospitals} adminEmail={adminEmail} />
-      <Welcome />
-      <LogoutButton />
+      <HospitalNav profilePicture={profilePicture} email={email} />
+
+      <AdminHospitalList allHospitals={allHospitals} adminEmail={email} />
+      <HospitalListFooter />
     </div>
   );
 };

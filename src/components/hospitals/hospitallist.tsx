@@ -1,17 +1,29 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import {
-  Stack,
-  Input,
-  Tag,
-  TagLabel,
-  TagCloseButton,
-  Collapse,
-} from "@chakra-ui/react";
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { Hospital } from "../../../types";
-import { FiFilter, FiCopy, FiEdit, FiTrash } from "react-icons/fi";
+import { FaStar } from "react-icons/fa";
+import {
+  FiFilter,
+  FiCopy,
+  FiEdit,
+  FiTrash,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 import { Button } from "../ui/button";
+import { MdUnfoldMoreDouble } from "react-icons/md";
+import { FaFileExport } from "react-icons/fa6";
+import { Input } from "../ui/input";
+import CreateHospitalForm from "./adminCreateHospitalForm";
+import { IoMdAddCircle } from "react-icons/io";
+import SkeletonLoader from "./skeletion";
+import EditHospitalForm from "./edithospitalform";
 
 const Hospitallist = ({
   allHospitals,
@@ -27,7 +39,7 @@ const Hospitallist = ({
   onDeleteHospital?: (hospitalId: number) => void;
 }) => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(20);
+  const [limit, setLimit] = useState(15);
   const [displayedHospitals, setDisplayedHospitals] = useState<Hospital[]>([]);
   const [filteredHospitals, setFilteredHospitals] = useState<Hospital[]>([]);
 
@@ -35,7 +47,9 @@ const Hospitallist = ({
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const [email, setEmail] = useState<string>("");
+  const [editingHospital, setEditingHospital] = useState<Hospital | null>(null);
 
   const hasMore = displayedHospitals.length < filteredHospitals.length;
 
@@ -71,8 +85,6 @@ const Hospitallist = ({
     setLimit(newLimit);
     setDisplayedHospitals(newDisplayedHospitals);
   };
-
-  // console.log(userEmail);
 
   const states = useMemo(() => {
     const stateSet = new Set<string>();
@@ -174,161 +186,271 @@ const Hospitallist = ({
     link.click();
   };
 
+  const handleEditClick = (hospital: Hospital) => {
+    setEditingHospital(hospital);
+  };
+
+  // Filter scroll
+  const scrollRefState = useRef<HTMLDivElement>(null);
+  const scrollRefType = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = (ref: React.RefObject<HTMLDivElement>) => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: -200, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = (ref: React.RefObject<HTMLDivElement>) => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
+  };
+
+  const tierToStars: { [key: string]: number } = {
+    "Tier 1": 1,
+    "Tier 2": 2,
+    "Tier 3": 3,
+    "Tier 4": 4,
+    "Tier 5": 5,
+  };
+
+  const addHospitalToList = (newHospital: Hospital) => {
+    setDisplayedHospitals((prev) => [newHospital, ...prev]);
+    setFilteredHospitals((prev) => [newHospital, ...prev]);
+  };
+
   return (
     <div className='container mx-auto p-4'>
-      {userEmail}
-      {/* Toggle Filters Button */}
-      <FiFilter />
-      <Button
-        onClick={() => setShowFilters(!showFilters)}
-        size='sm'
-        className='mb-6'
-      >
-        {showFilters ? "Hide Filters" : "Show Filters"}
-      </Button>
-
-      {/* Search bar */}
-      <div className='mb-6'>
-        <Input
-          type='text'
-          placeholder='Search by name'
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className='border border-gray-300 p-3 rounded-md w-full lg:w-1/2 mx-auto placeholder-gray-500'
-        />
-      </div>
-
-      {/* Filter Chips */}
-      <Collapse in={showFilters}>
-        <div className='mb-6'>
-          <h3 className='text-lg font-semibold mb-4'>Filter by State</h3>
-          <Stack direction='row' spacing={2} flexWrap='wrap'>
-            {states.map((state) => (
-              <Tag
-                key={state}
-                size='lg'
-                variant={selectedStates.includes(state) ? "solid" : "outline"}
-                colorScheme='blue'
-                onClick={() => handleStateToggle(state)}
-                className='cursor-pointer'
-                borderRadius='full'
-              >
-                <TagLabel>{state}</TagLabel>
-                {selectedStates.includes(state) && (
-                  <TagCloseButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleStateToggle(state);
+      {/* {displayedHospitals.length <= 0 && <SkeletonLoader />} */}
+      {/* {displayedHospitals.length > 0 && ( */}
+      <>
+        <div className='flex flex-col md:flex-row w-full gap-4 md:gap-6 justify-center align-middle'>
+          {isAdmin && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button onClick={() => setShowCreateForm(true)} className='p-6'>
+                  <IoMdAddCircle className='mr-2' size={24} />
+                  <span className='md:block'>New</span>
+                  <span className='md:hidden'>New Hospitals</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className='p-6 bg-white shadow-md rounded-lg'>
+                {showCreateForm && (
+                  <CreateHospitalForm
+                    setShowCreateForm={setShowCreateForm}
+                    onHospitalCreated={(newHospital) => {
+                      addHospitalToList(newHospital);
+                      setShowCreateForm(false);
                     }}
                   />
                 )}
-              </Tag>
-            ))}
-          </Stack>
+              </PopoverContent>
+            </Popover>
+          )}
 
-          <h3 className='text-lg font-semibold mt-6 mb-4'>Filter by Type</h3>
-          <Stack direction='row' spacing={2} flexWrap='wrap'>
-            {types.map((type) => (
-              <Tag
-                key={type}
-                size='lg'
-                variant={selectedTypes.includes(type) ? "solid" : "outline"}
-                colorScheme='green'
-                onClick={() => handleTypeToggle(type)}
-                className='cursor-pointer'
-                borderRadius='full'
-              >
-                <TagLabel>{type}</TagLabel>
-                {selectedTypes.includes(type) && (
-                  <TagCloseButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleTypeToggle(type);
-                    }}
-                  />
+          {displayedHospitals.length > 0 && (
+            <>
+              {/* Toggle Filters Button */}
+              <div className='flex flex-row  md:w-1/2 justify-between md:justify-start md:gap-6'>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button className='p-6'>
+                      <FiFilter size={24} className='mr-2' />
+                      <span className='hidden md:block'>Filter</span>
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-[80vw] md:w-[50vw] p-6 mx-auto bg-white shadow-md rounded-lg'>
+                    {/* Filter by State */}
+                    <h3 className='text-lg font-semibold mb-4 '>
+                      Filter by State
+                    </h3>
+                    <div className='relative'>
+                      <FiChevronLeft
+                        className='absolute left-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-10 bg-white rounded-full p-1 shadow'
+                        size={24}
+                        onClick={() => scrollLeft(scrollRefState)}
+                      />
+                      <div
+                        className='flex overflow-hidden gap-2 mx-6'
+                        ref={scrollRefState}
+                      >
+                        {states.map((state) => (
+                          <Button
+                            key={state}
+                            variant={
+                              selectedStates.includes(state)
+                                ? "default"
+                                : "outline"
+                            }
+                            size='sm'
+                            onClick={() => handleStateToggle(state)}
+                            className={`text-sm md:text-lg cursor-pointer rounded-full ${
+                              selectedStates.includes(state)
+                                ? "bg-blue-500 text-white"
+                                : "bg-gray-200"
+                            }`}
+                          >
+                            {state}
+                          </Button>
+                        ))}
+                      </div>
+                      <FiChevronRight
+                        className='absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-10 bg-white rounded-full p-1 shadow'
+                        size={24}
+                        onClick={() => scrollRight(scrollRefState)}
+                      />
+                    </div>
+
+                    {/* Filter by Type */}
+                    <h3 className='text-lg font-semibold mt-6 mb-4 '>
+                      Filter by Type
+                    </h3>
+                    <div className='relative'>
+                      <FiChevronLeft
+                        className='absolute left-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-10 bg-white rounded-full p-1 shadow'
+                        size={24}
+                        onClick={() => scrollLeft(scrollRefType)}
+                      />
+                      <div
+                        className='flex overflow-hidden gap-2 mx-6'
+                        ref={scrollRefType}
+                      >
+                        {types.map((type) => (
+                          <Button
+                            key={type}
+                            variant={
+                              selectedTypes.includes(type)
+                                ? "default"
+                                : "outline"
+                            }
+                            size='sm'
+                            onClick={() => handleTypeToggle(type)}
+                            className={`text-sm md:text-lg cursor-pointer rounded-full ${
+                              selectedTypes.includes(type)
+                                ? "bg-green-500 text-white"
+                                : "bg-gray-200"
+                            }`}
+                          >
+                            {type}
+                          </Button>
+                        ))}
+                      </div>
+                      <FiChevronRight
+                        className='absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-10 bg-white rounded-full p-1 shadow'
+                        size={24}
+                        onClick={() => scrollRight(scrollRefType)}
+                      />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+
+                {/* Download button - show only if any filters are applied */}
+                {(selectedStates.length > 0 ||
+                  selectedTypes.length > 0 ||
+                  searchTerm) && (
+                  <Button onClick={downloadData} className='p-6'>
+                    <FaFileExport size={24} className='mr-2' />
+                    <span className='hidden md:block'>Export</span>
+                  </Button>
                 )}
-              </Tag>
-            ))}
-          </Stack>
-        </div>
-      </Collapse>
 
-      {/* Copy button - show only if any filters are applied */}
-      {(selectedStates.length > 0 ||
-        selectedTypes.length > 0 ||
-        searchTerm) && (
-        <div className='mt-8'>
-          <h3 className='text-lg font-semibold mb-4'>Share this list</h3>
-          <Stack direction='row' spacing={4}>
-            <Button onClick={getLink}>Copy Link</Button>
-            <FiCopy />
-          </Stack>
-        </div>
-      )}
+                {/* Copy button - show only if any filters are applied */}
+                {(selectedStates.length > 0 ||
+                  selectedTypes.length > 0 ||
+                  searchTerm) && (
+                  <Button onClick={getLink} className='p-6'>
+                    <FiCopy className='mr-2' size={24} />
+                    <span className='hidden md:block'>Copy</span>
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
 
-      {/* Display hospitals */}
-      {displayedHospitals.length > 0 && (
-        <ul className='hospital-list space-y-4'>
-          {displayedHospitals.map((hospital) => (
-            <li
-              key={hospital.id}
-              className='hospital-item p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out'
+          {/* Search bar */}
+          <div className='mb-6 flex-grow'>
+            <Input
+              type='text'
+              placeholder='Search by name'
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className='border bg-gray-100 border-gray-300 p-6 rounded-md w-full mx-auto'
+            />
+          </div>
+        </div>
+
+        {/* Display hospitals */}
+        {displayedHospitals.length <= 0 && <SkeletonLoader />}
+        {displayedHospitals.length > 0 && (
+          <>
+            <ul className='grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 '>
+              {displayedHospitals.map((hospital) => (
+                <li
+                  key={hospital.id}
+                  className=' p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out border border-[#04A5BA]'
+                >
+                  <p className='hospital-name text-2xl font-bold text-gray-800 mb-2'>
+                    {hospital.name}
+                  </p>
+                  <p className='hospital-name text-xl font-bold text-gray-800 mb-2 min-h-[60px]'>
+                    {hospital.address}
+                  </p>
+                  <p className='hospital-name text-lg font-bold text-gray-800 mb-2'>
+                    {hospital.phone_number}
+                  </p>
+                  <p className='hospital-type text-sm text-gray-600'>
+                    <span className='font-semibold text-gray-700'>Type:</span>{" "}
+                    {hospital.type?.name}
+                  </p>
+                  <p className='hospital-tier text-sm text-gray-600'>
+                    <span className='font-semibold text-gray-700'>State:</span>{" "}
+                    {hospital.state?.name}
+                  </p>
+                  <p className='hospital-tier text-sm text-gray-600 mt-2'>
+                    <div className='flex'>
+                      {[...Array(tierToStars[hospital.tier?.name] || 0)].map(
+                        (_, index) => (
+                          <FaStar key={index} className='text-yellow-500' />
+                        )
+                      )}
+                    </div>
+                  </p>
+
+                  {/* Admin Buttons */}
+                  {isAdmin && (
+                    // <p>Admin</p>
+                    <div className='flex space-x-4 mt-4'>
+                      <Button onClick={() => onEditHospital?.(hospital)}>
+                        <FiEdit /> Edit
+                      </Button>
+                      <Button
+                        variant='destructive'
+                        onClick={() => onDeleteHospital?.(hospital.id)}
+                      >
+                        <FiTrash />
+                        Delete
+                      </Button>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+            {/* Load More Button */}
+            <Button
+              onClick={loadMoreHospitals}
+              size='lg'
+              variant='green'
+              className='mt-6 mx-auto flex gap-2'
+              // isDisabled={!hasMore}
             >
-              <p className='hospital-name text-xl font-bold text-gray-800 mb-2'>
-                {hospital.name}
-              </p>
-              <p className='hospital-name text-xl font-bold text-gray-800 mb-2'>
-                {hospital.phone_number}
-              </p>
-              <p className='hospital-type text-sm text-gray-600'>
-                <span className='font-semibold text-gray-700'>Type:</span>{" "}
-                {hospital.type?.name}
-              </p>
-              <p className='hospital-tier text-sm text-gray-600'>
-                <span className='font-semibold text-gray-700'>Tier:</span>{" "}
-                {hospital.tier?.name}
-              </p>
+              <MdUnfoldMoreDouble size={25} />
+              Load More
+            </Button>
+          </>
+        )}
 
-              {/* Admin Buttons */}
-              {isAdmin && (
-                // <p>Admin</p>
-                <div className='flex space-x-4 mt-4'>
-                  <Button onClick={() => onEditHospital?.(hospital)}>
-                    <FiEdit />
-                    Edit
-                  </Button>
-                  <Button
-                    variant='destructive'
-                    onClick={() => onDeleteHospital?.(hospital.id)}
-                  >
-                    <FiTrash />
-                    Delete
-                  </Button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {/* Load More Button */}
-      <Button
-        onClick={loadMoreHospitals}
-        size='lg'
-        className='mt-6 mx-auto block'
-        // isDisabled={!hasMore}
-      >
-        Load More
-      </Button>
-
-      {/* Download button - show only if any filters are applied */}
-      {(selectedStates.length > 0 ||
-        selectedTypes.length > 0 ||
-        searchTerm) && (
-        <Button size='lg' onClick={downloadData} className='mt-6 mx-auto block'>
-          Export to CSV
-        </Button>
-      )}
+        {/* )} */}
+      </>
     </div>
   );
 };

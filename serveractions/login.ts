@@ -81,20 +81,3 @@ export const loginWithOAuth = async (provider: OAuthProvider) => {
     return { error: "Something went wrong with OAuth login!" };
   }
 };
-
-//   phone_number: phoneNumber,
-//   state: {
-//     id: selectedState,
-//     name: states.find((state) => state.id === selectedState)?.name || "",
-//   },
-//   stateId: selectedState,
-//   tier: {
-//     id: selectedTier,
-//     name: tiers.find((tier) => tier.id === selectedTier)?.name || "",
-//   },
-//   tierId: selectedTier,
-//   type: {
-//     id: selectedType,
-//     name: types.find((type) => type.id === selectedType)?.name || "",
-//   },
-//   typeId: selectedType,

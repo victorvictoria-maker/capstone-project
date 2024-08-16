@@ -31,9 +31,9 @@ const FormWrapper = ({
 }: FormProps) => {
   return (
     <Card className='max-w-[450px] shadow-lg'>
-      <CardHeader className='w-full flex flex-col gap-y-4 items-center justify-center'>
-        <CardTitle className={cn("text-3xl font-semibold", font.className)}>
-          Care Finder
+      <CardHeader className='w-full flex flex-col gap-y-1 items-center justify-center'>
+        <CardTitle className={cn("text-3xl font-semibold ", font.className)}>
+          Care Connect
         </CardTitle>
         <CardDescription className='text-muted-foreground text-sm'>
           {headerTitle}
@@ -41,7 +41,12 @@ const FormWrapper = ({
       </CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter>
-        <Button variant='link' className='font-normal w-full' size='sm' asChild>
+        <Button
+          variant='link'
+          className='font-normal w-full '
+          size='sm'
+          asChild
+        >
           <Link href={buttonLink}>{buttonLabel}</Link>
         </Button>
       </CardFooter>

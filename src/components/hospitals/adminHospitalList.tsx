@@ -3,14 +3,13 @@
 import { useState, startTransition, useEffect } from "react";
 import { DropDownOptions, Hospital } from "../../../types";
 import Hospitallist from "./hospitallist";
-import { FormError } from "../FormError";
-import { FormSuccess } from "../FormSuccess";
+import { toast } from "react-toastify";
 import {
   deleteHospitalById,
   fetchDropdownOptionsForHospitalEdit,
   updateHospital,
 } from "../../../serveractions/admin";
-import EditPopover from "./editPopover";
+import EditPopover from "./edithospitalform";
 
 const AdminHospitalList = ({
   allHospitals,
@@ -21,8 +20,6 @@ const AdminHospitalList = ({
 }) => {
   const [hospitals, setHospitals] = useState<Hospital[]>(allHospitals);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
 
   const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(
     null
@@ -32,6 +29,8 @@ const AdminHospitalList = ({
     types: [],
     tiers: [],
   });
+
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   useEffect(() => {
     const loadDropdownOptions = async () => {
@@ -48,16 +47,16 @@ const AdminHospitalList = ({
 
   const saveHospital = async (updatedHospital: Hospital) => {
     const result = await updateHospital(updatedHospital);
-    if (result.success) {
+    if (result?.success) {
       setSelectedHospital(null);
       setHospitals((prevHospitals) =>
         prevHospitals.map((h) =>
           h.id === updatedHospital.id ? updatedHospital : h
         )
       );
-      setSuccess("Hospital updated successfully!");
-    } else {
-      setError(result.error || "Failed to update hospital");
+      toast.success("Hospital updated successfully!");
+    } else if (result?.error) {
+      toast.error(result.error || "Failed to update hospital");
     }
   };
 
@@ -72,11 +71,11 @@ const AdminHospitalList = ({
         .then((data) => {
           setIsLoading(false);
           if (data?.error) {
-            setError(data.error);
+            toast.error(data.error);
           }
 
           if (data?.success) {
-            setSuccess(data.success);
+            toast.success(data.success);
 
             if (data.success === "Record deleted successffuly!") {
               // update ui
@@ -89,7 +88,7 @@ const AdminHospitalList = ({
         })
         .catch(() => {
           setIsLoading(false);
-          setError("Something went wrong while deleting the hospital!");
+          toast.error("Something went wrong while deleting the hospital!");
         });
     });
   };
@@ -97,17 +96,16 @@ const AdminHospitalList = ({
   return (
     <div>
       {isLoading && <p>Loading...</p>}
-      {/* comvert this to 5 seconds toast */}
-      <FormError message={error} />
-      <FormSuccess message={success} />
+
       {selectedHospital && (
         <EditPopover
           hospital={selectedHospital}
-          onSave={saveHospital}
           onClose={closeModal}
-          options={dropdownOptions}
+          onHospitalUpdated={saveHospital}
+          dropdownOptions={dropdownOptions}
         />
       )}
+
       <Hospitallist
         allHospitals={hospitals}
         userEmail={adminEmail}
