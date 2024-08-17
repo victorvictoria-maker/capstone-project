@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useState, useMemo, useEffect, useRef } from "react";
 import {
   Popover,
@@ -230,8 +231,8 @@ const Hospitallist = ({
               <PopoverTrigger asChild>
                 <Button onClick={() => setShowCreateForm(true)} className='p-6'>
                   <IoMdAddCircle className='mr-2' size={24} />
-                  <span className='md:block'>New</span>
-                  <span className='md:hidden'>New Hospitals</span>
+                  <span className='hidden md:block'>New</span>
+                  <span className='block md:hidden'>New Hospitals</span>
                 </Button>
               </PopoverTrigger>
               <PopoverContent className='p-6 bg-white shadow-md rounded-lg'>
@@ -385,10 +386,17 @@ const Hospitallist = ({
           <>
             <ul className='grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 '>
               {displayedHospitals.map((hospital) => (
-                <li
+                <motion.li
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: hospital.id * 0.2 }}
                   key={hospital.id}
                   className=' p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out border border-[#04A5BA]'
                 >
+                  {/* <li
+                  key={hospital.id}
+                  className=' p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out border border-[#04A5BA]'
+                > */}
                   <p className='hospital-name text-2xl font-bold text-gray-800 mb-2'>
                     {hospital.name}
                   </p>
@@ -432,7 +440,8 @@ const Hospitallist = ({
                       </Button>
                     </div>
                   )}
-                </li>
+                  {/* </li> */}
+                </motion.li>
               ))}
             </ul>
             {/* Load More Button */}

@@ -37,3 +37,21 @@ export async function fetchFilteredHealthcareProvider(
     return [];
   }
 }
+
+export const getNumberOfHospitals = async () => {
+  try {
+    const hospitals = await getAllHealthcareProvider();
+    if (hospitals) {
+      console.log(hospitals);
+
+      const noOfHospitals = hospitals.length;
+      console.log("hos", noOfHospitals);
+      return noOfHospitals;
+    } else {
+      return 0;
+    }
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};

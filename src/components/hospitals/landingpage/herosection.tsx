@@ -7,6 +7,9 @@ import { GiHospital } from "react-icons/gi";
 import { TbBuildingEstate } from "react-icons/tb";
 import { MdOutlineBloodtype } from "react-icons/md";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getAllHealthcareProvider } from "../../../../fetchdatafromdb/gethospitals";
+import { getNumberOfHospitals } from "../../../../serveractions/hospitals";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -24,6 +27,24 @@ const staggerContainer = {
 };
 
 const Herosection = () => {
+  const [hospitalCount, setHospitalCount] = useState<number | undefined>(
+    undefined
+  );
+
+  // useEffect(() => {
+  //   const fetchHospitalCount = async () => {
+  //     const noOfHospitals = await getNumberOfHospitals();
+  //     console.log(noOfHospitals);
+  //     setHospitalCount(noOfHospitals);
+  //   };
+
+  //   fetchHospitalCount();
+  //   console.log(hospitalCount);
+  // }, [hospitalCount]);
+
+  // const formattedHospitalCount =
+  //   hospitalCount !== undefined ? hospitalCount.toLocaleString() : undefined;
+
   return (
     <div>
       {/* Section 1: Hero Section */}
@@ -55,7 +76,7 @@ const Herosection = () => {
                 <Link href='/login'>Find Hospitals</Link>
               </Button>
               <Button variant='white' size='lg'>
-                Contact Us
+                <Link href='/about'> About Project</Link>
               </Button>
             </div>
           </motion.div>
@@ -106,9 +127,10 @@ const Herosection = () => {
             <div className='mt-4'>
               <p
                 className='font-bold text-xl text-[#04A5BA]'
-                data-target='24000'
+                data-target='2000'
               >
-                24,000+
+                {/* <span>{formattedHospitalCount}</span> + */}
+                2,000+
               </p>
               <p className='font-bold'>Hospitals</p>
             </div>

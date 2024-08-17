@@ -1,7 +1,6 @@
 import Footer from "@/components/hospitals/landingpage/footer";
 import Herosection from "@/components/hospitals/landingpage/herosection";
 import Navbar from "@/components/hospitals/landingpage/navbar";
-import Link from "next/link";
 
 export default function Home() {
   return (
