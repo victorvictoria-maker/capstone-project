@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { CreateHospitalInput, Hospital } from "../types";
+import { CreateHospitalInput, Hospital } from "../../types";
 
 export async function deleteHospitalById(hospitalId: number) {
   try {

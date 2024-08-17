@@ -6,9 +6,9 @@ import { createClient } from "@/utils/supabase/server";
 
 import * as z from "zod";
 import bcrypt from "bcryptjs";
-import { RegisterSchema } from "../schemas";
-import { getAllUsers, getUserByEmail } from "../fetchdatafromdb/getuser";
 import { db } from "@/lib/db";
+import { RegisterSchema } from "../../schemas";
+import { getUserByEmail } from "@/fetchdatafromdb/getuser";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   console.log("Register user function called");

@@ -1,11 +1,10 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { LoginSchema } from "../schemas";
 import * as z from "zod";
 import bcrypt from "bcryptjs";
-import { getUserByEmail } from "../fetchdatafromdb/getuser";
-import { redirect } from "next/navigation";
+import { getUserByEmail } from "@/fetchdatafromdb/getuser";
+import { LoginSchema } from "../../schemas";
 
 export const login = async (
   values: z.infer<typeof LoginSchema>,

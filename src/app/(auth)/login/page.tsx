@@ -19,11 +19,10 @@ import { Button } from "@/components/ui/button";
 import { Suspense, useState, useTransition } from "react";
 import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
-import { login } from "../../../../serveractions/login";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import SocialMedia from "@/components/SocialMedia";
 import Image from "next/image";
+import { login } from "@/serveractions/login";
 
 const LoginPageContent = () => {
   const router = useRouter();

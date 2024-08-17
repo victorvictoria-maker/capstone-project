@@ -1,12 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-
 import AdminHospitalList from "@/components/hospitals/adminHospitalList";
-import { fetchHospitalData } from "../../../../serveractions/hospitals";
-import CreateHospitalForm from "@/components/hospitals/adminCreateHospitalForm";
-
 import HospitalNav from "@/components/hospitals/hospitalNav";
 import HospitalListFooter from "@/components/hospitals/hospitallistfooter";
+import { fetchHospitalData } from "@/serveractions/hospitals";
 
 export const metadata = {
   title: "Admin Page",

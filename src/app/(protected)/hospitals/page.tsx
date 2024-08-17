@@ -1,17 +1,10 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
-import { LogoutButton } from "@/components/LogoutButton";
-import { fetchHospitalData } from "../../../../serveractions/hospitals";
 import Hospitallist from "@/components/hospitals/hospitallist";
-import Link from "next/link";
-import { FaRegUser } from "react-icons/fa";
-import Image from "next/image";
 import HospitalNav from "@/components/hospitals/hospitalNav";
 import HospitalListFooter from "@/components/hospitals/hospitallistfooter";
-{
-  /* <FaRegUser /> */
-}
+import { fetchHospitalData } from "@/serveractions/hospitals";
 
 export const metadata = {
   title: "Hospitals",

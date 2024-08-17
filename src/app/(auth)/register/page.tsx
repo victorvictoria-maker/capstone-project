@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { RegisterSchema } from "../../../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
@@ -18,10 +17,11 @@ import { Button } from "@/components/ui/button";
 import { useState, useTransition } from "react";
 import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
-import { register } from "../../../../serveractions/register";
 import { useRouter } from "next/navigation";
 import SocialMedia from "@/components/SocialMedia";
 import Image from "next/image";
+import { register } from "@/serveractions/register";
+import { RegisterSchema } from "../../../../schemas";
 
 // #Vicky01
 

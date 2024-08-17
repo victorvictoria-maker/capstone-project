@@ -4,12 +4,12 @@ import { useState, startTransition, useEffect } from "react";
 import { DropDownOptions, Hospital } from "../../../types";
 import Hospitallist from "./hospitallist";
 import { toast } from "react-toastify";
+import EditPopover from "./edithospitalform";
 import {
   deleteHospitalById,
   fetchDropdownOptionsForHospitalEdit,
   updateHospital,
-} from "../../../serveractions/admin";
-import EditPopover from "./edithospitalform";
+} from "@/serveractions/admin";
 
 const AdminHospitalList = ({
   allHospitals,

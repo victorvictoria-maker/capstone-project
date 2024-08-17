@@ -8,8 +8,8 @@ import { TbBuildingEstate } from "react-icons/tb";
 import { MdOutlineBloodtype } from "react-icons/md";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getAllHealthcareProvider } from "../../../../fetchdatafromdb/gethospitals";
-import { getNumberOfHospitals } from "../../../../serveractions/hospitals";
+import { getAllHealthcareProvider } from "../../../fetchdatafromdb/gethospitals";
+import { getNumberOfHospitals } from "../../../serveractions/hospitals";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },

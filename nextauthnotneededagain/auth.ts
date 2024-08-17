@@ -5,9 +5,9 @@ import { db } from "@/lib/db";
 // import { getUserById } from "./fetchdatafromdb/getuser";
 // import { getAccountByUserId } from "./fetchdatafromdb/getuseraccount";
 import { UserRole } from "@prisma/client";
-import { getUserById } from "../fetchdatafromdb/getuser";
-import { getAccountByUserId } from "../fetchdatafromdb/getuseraccount";
 import authConfig from "./auth.config";
+import { getUserById } from "@/fetchdatafromdb/getuser";
+import { getAccountByUserId } from "@/fetchdatafromdb/getuseraccount";
 // import GitHub from "next-auth/providers/github";
 // import Google from "next-auth/providers/google";
 

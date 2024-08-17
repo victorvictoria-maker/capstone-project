@@ -1,8 +1,8 @@
+import { Hospital } from "../../types";
 import {
   getAllFilteredHealthcareProvider,
   getAllHealthcareProvider,
 } from "../fetchdatafromdb/gethospitals";
-import { Hospital } from "../types";
 
 export async function fetchHospitalData(): Promise<Hospital[]> {
   try {

@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import {
   fetchDropdownOptionsForHospitalEdit,
   createHospital,
-} from "../../../serveractions/admin";
+} from "@/serveractions/admin";
 import { CreateHospitalInput, DropDownOptions, Hospital } from "../../../types";
 import { CreateHospitalSchema } from "../../../schemas";
 import { Input } from "../ui/input";

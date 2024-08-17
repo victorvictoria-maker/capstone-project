@@ -17,9 +17,9 @@ import { FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import FormWrapper from "@/components/FormWrapper";
 import { ResetPasswordSchema } from "../../../schemas";
-import { resetPassword } from "../../../serveractions/resetpassword";
 import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
+import { resetPassword } from "@/serveractions/resetpassword";
 
 const ResetPasswordPage = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -37,7 +37,7 @@ const ResetPasswordPage = () => {
     startTransition(() => {
       console.log(value);
       resetPassword(value.email)
-        .then((data) => {
+        .then((data: any) => {
           if (data?.error) {
             setError(data?.error);
           }

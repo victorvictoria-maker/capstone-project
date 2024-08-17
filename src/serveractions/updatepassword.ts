@@ -1,8 +1,8 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { UpdatePasswordSchema } from "../schemas";
 import * as z from "zod";
+import { UpdatePasswordSchema } from "../../schemas";
 
 export const updatePassword = async (
   values: z.infer<typeof UpdatePasswordSchema>

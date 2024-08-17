@@ -2,8 +2,7 @@ import { Button } from "./ui/button";
 
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-
-import { loginWithOAuth } from "../../serveractions/login";
+import { loginWithOAuth } from "@/serveractions/login";
 
 const SocialMedia = () => {
   const signProvider = async (provider: "google" | "github") => {
