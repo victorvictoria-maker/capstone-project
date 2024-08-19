@@ -15,6 +15,10 @@ const Footer = () => {
           Care Connect
         </h1>
 
+        <p className='text-white text-center text-sm'>
+          &copy; {new Date().getFullYear()} Care Connect. All rights reserved.
+        </p>
+
         <div className='flex space-x-4'>
           <Link href='/' aria-label='Facebook'>
             <FaFacebookF className='text-white hover:text-blue-600 w-6 h-6' />

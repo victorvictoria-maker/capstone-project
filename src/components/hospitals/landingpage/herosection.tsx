@@ -6,10 +6,14 @@ import Image from "next/image";
 import { GiHospital } from "react-icons/gi";
 import { TbBuildingEstate } from "react-icons/tb";
 import { MdOutlineBloodtype } from "react-icons/md";
+import { FaCheck } from "react-icons/fa";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAllHealthcareProvider } from "../../../fetchdatafromdb/gethospitals";
 import { getNumberOfHospitals } from "../../../serveractions/hospitals";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import Hospitaltypes from "./hospitaltypes";
+// import PsychiatryIcon from "/images/psychiatry.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -30,6 +34,21 @@ const Herosection = () => {
   const [hospitalCount, setHospitalCount] = useState<number | undefined>(
     undefined
   );
+
+  // Scroll
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
 
   // useEffect(() => {
   //   const fetchHospitalCount = async () => {
@@ -218,6 +237,84 @@ const Herosection = () => {
                 <p className='text-lg font-semibold'>Experienced Doctors</p>
                 <div className='progress-bar bg-[#04A5BA] w-4/5 h-2 rounded-full mt-2'></div>
                 <p className='mt-2 text-gray-700'>2,000+ doctors</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Section 4: Hospital Types Section*/}
+      <Hospitaltypes />
+
+      {/* Section 5: What you would get Section */}
+      <motion.section
+        variants={staggerContainer}
+        initial='hidden'
+        whileInView='visible'
+        viewport={{ once: true }}
+      >
+        <div className='max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center lg:py-12 px-4 '>
+          <motion.div
+            className=' lg:w-2/3 space-y-4 lg:pr-16 pt-3  '
+            variants={fadeInUp}
+          >
+            <h2 className='text-xl md:text-3xl font-bold'>
+              Uncover the Best Healthcare Services
+            </h2>
+            <p className='text-gray-700'>
+              Care Connect helps you find the best healthcare providers. From
+              hospitals to specialist clinics, we’ve got you covered.
+            </p>
+            <ul className='space-y-2 text-gray-700'>
+              <li className='flex  items-center gap-1'>
+                <FaCheck /> Thousands of hospitals
+              </li>
+              <li className='flex  items-center gap-1'>
+                <FaCheck /> Nationwide coverage
+              </li>
+              <li className='flex  items-center gap-1'>
+                <FaCheck /> Trusted healthcare providers
+              </li>
+              <li className='flex  items-center gap-1'>
+                <FaCheck /> Easy search functionality
+              </li>
+              <li className='flex  items-center gap-1'>
+                <FaCheck /> Detailed hospital profiles
+              </li>
+            </ul>
+            <Button variant='blue' size='lg'>
+              <Link href='/hospitals'>Learn More</Link>
+            </Button>
+          </motion.div>
+          <motion.div
+            className='lg:w-1/2 flex flex-col items-center relative h-full w-full '
+            variants={fadeInUp}
+          >
+            <div className=' lg:w-13/  flex flex-col gap-4 w-full md:justify-center md:items-center  lg:flex-row'>
+              <div>
+                <Image
+                  src='/images/medical-team-discussing-with-african-american-sick-patient.jpg'
+                  alt='Image 1'
+                  className=' w-full h-full rounded-md'
+                  width={300}
+                  height={500}
+                />
+              </div>
+              <div className='flex flex-col gap-4 md:flex-row lg:flex-col'>
+                <Image
+                  src='/images/clean-empty-hospital-ward-ready-receive-patients-reflecting-modern-medical-care.jpg'
+                  alt='Image 1'
+                  className=' w-full h-full rounded-md'
+                  width={300}
+                  height={500}
+                />
+                <Image
+                  src='/images/african-american-doctor-doing-checkup-visit-with-female-wheelchair.jpg'
+                  alt='Image 1'
+                  className=' w-full h-full rounded-md'
+                  width={400}
+                  height={600}
+                />
               </div>
             </div>
           </motion.div>

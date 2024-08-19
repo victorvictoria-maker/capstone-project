@@ -287,7 +287,7 @@ const Hospitallist = ({
                             onClick={() => handleStateToggle(state)}
                             className={`text-sm md:text-lg cursor-pointer rounded-full ${
                               selectedStates.includes(state)
-                                ? "bg-blue-500 text-white"
+                                ? " text-white"
                                 : "bg-gray-200"
                             }`}
                           >
@@ -328,7 +328,7 @@ const Hospitallist = ({
                             onClick={() => handleTypeToggle(type)}
                             className={`text-sm md:text-lg cursor-pointer rounded-full ${
                               selectedTypes.includes(type)
-                                ? "bg-green-500 text-white"
+                                ? " text-white"
                                 : "bg-gray-200"
                             }`}
                           >
@@ -448,7 +448,7 @@ const Hospitallist = ({
             <Button
               onClick={loadMoreHospitals}
               size='lg'
-              variant='green'
+              variant='default'
               className='mt-6 mx-auto flex gap-2'
               // isDisabled={!hasMore}
             >

@@ -2,6 +2,9 @@
 
 import Navbar from "@/components/hospitals/landingpage/navbar";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { FaCheck } from "react-icons/fa";
 
 export default function AboutPage() {
   return (
@@ -9,12 +12,12 @@ export default function AboutPage() {
       <Navbar />
       <div className='min-h-screen bg-gradient-to-b from-[#EFCB68] via-white to-[#456DFF] text-gray-800 p-6'>
         {/* Hero Section */}
-        <section className='text-center py-6'>
+        <section className='text-center py-16'>
           <motion.h1
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className='text-5xl font-extrabold  mb-4'
+            className='text-5xl font-extrabold mb-4'
           >
             Care Connect
           </motion.h1>
@@ -22,14 +25,21 @@ export default function AboutPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className='text-2xl  font-medium'
+            className='text-2xl font-medium mb-8'
           >
             Finding the right care for you.
           </motion.p>
+          <Image
+            src='/images/african-american-doctor-doing-checkup-visit-with-female-wheelchair-user-talking-about-physical-disability-healthcare-diagnosis-consulting-woman-with-impairment-medical-appointment.jpg'
+            alt='Care Connect Hero'
+            className='w-full max-w-3xl mx-auto rounded-lg shadow-lg'
+            width={1200}
+            height={600}
+          />
         </section>
 
         {/* Project Details */}
-        <section className='max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 my-16'>
+        <section className='max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 my-16 px-4'>
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -41,11 +51,10 @@ export default function AboutPage() {
             </h2>
             <p className='text-lg'>
               Care Connect is a platform designed to help users locate hospitals
-              nearby. The platform supports searching, filtering, and sharing
-              results, with a special admin panel for managing hospital records.
-              This project is the capstone for Alt School&apos;s final semester
-              and leverages modern web technologies to create a seamless user
-              experience.
+              nearby. It includes features such as searching, filtering, and
+              sharing results, along with an admin panel for managing hospital
+              records. This capstone project for Alt School leverages modern web
+              technologies to deliver a seamless user experience.
             </p>
           </motion.div>
           <motion.div
@@ -56,13 +65,34 @@ export default function AboutPage() {
           >
             <h2 className='text-3xl font-bold text-[#456DFF] mb-4'>Features</h2>
             <ul className='list-disc ml-5 space-y-2 text-lg'>
-              <li>Hospital search by location and type</li>
-              <li>Filtering by state and hospital type</li>
-              <li>Copy and export filtered results</li>
-              <li>Admin panel for creating, editing, and updating hospitals</li>
-              <li>Email/password and OAuth authentication (Google, GitHub)</li>
-              <li>Responsive design for all devices</li>
-              <li>SEO optimized for better search visibility</li>
+              <li className='flex items-center gap-2'>
+                <FaCheck className='text-[#04A5BA]/80' /> Hospital search by
+                location and type
+              </li>
+              <li className='flex items-center gap-2'>
+                <FaCheck className='text-[#04A5BA]/80' /> Filtering by state and
+                hospital type
+              </li>
+              <li className='flex items-center gap-2'>
+                <FaCheck className='text-[#04A5BA]/80' /> Copy and export
+                filtered results
+              </li>
+              <li className='flex items-center gap-2'>
+                <FaCheck className='text-[#04A5BA]/80' /> Admin panel for
+                managing hospitals
+              </li>
+              <li className='flex items-center gap-2'>
+                <FaCheck className='text-[#04A5BA]/80' /> Email/password and
+                OAuth authentication (Google, GitHub)
+              </li>
+              <li className='flex items-center gap-2'>
+                <FaCheck className='text-[#04A5BA]/80' /> Responsive design for
+                all devices
+              </li>
+              <li className='flex items-center gap-2'>
+                <FaCheck className='text-[#04A5BA]/80' /> SEO optimized for
+                better search visibility
+              </li>
             </ul>
           </motion.div>
         </section>
@@ -78,7 +108,7 @@ export default function AboutPage() {
             >
               Technology Stack
             </motion.h2>
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-8 text-left'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4'>
               {technologies.map((tech, index) => (
                 <motion.div
                   key={index}

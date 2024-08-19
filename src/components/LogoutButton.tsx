@@ -9,7 +9,7 @@ export const LogoutButton = () => {
   };
 
   return (
-    <Button onClick={logoutUser} variant='green'>
+    <Button onClick={logoutUser} variant='outline'>
       Logout
     </Button>
   );

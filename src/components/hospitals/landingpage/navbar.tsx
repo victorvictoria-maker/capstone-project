@@ -30,7 +30,7 @@ const Navbar = () => {
             Admin
           </Link>
           <Link href='/about ' className='hover:text-blue-600'>
-            About
+            About Project
           </Link>
           {/* <Link href='/about' className='hover:text-blue-600'>
             Contact Us
@@ -89,7 +89,7 @@ const Navbar = () => {
             onClick={toggleMenu}
             className='text-2xl hover:text-blue-600'
           >
-            About
+            About Project
           </Link>
           {/* <Link
             href='/about'
