@@ -24,7 +24,7 @@ import { Input } from "../ui/input";
 import CreateHospitalForm from "./adminCreateHospitalForm";
 import { IoMdAddCircle } from "react-icons/io";
 import SkeletonLoader from "./skeletion";
-import EditHospitalForm from "./edithospitalform";
+import { toast } from "react-toastify";
 
 const Hospitallist = ({
   allHospitals,
@@ -39,7 +39,6 @@ const Hospitallist = ({
   onEditHospital?: (hospital: Hospital) => void;
   onDeleteHospital?: (hospitalId: number) => void;
 }) => {
-  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(15);
   const [displayedHospitals, setDisplayedHospitals] = useState<Hospital[]>([]);
   const [filteredHospitals, setFilteredHospitals] = useState<Hospital[]>([]);
@@ -47,9 +46,7 @@ const Hospitallist = ({
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [showFilters, setShowFilters] = useState<boolean>(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [email, setEmail] = useState<string>("");
   const [editingHospital, setEditingHospital] = useState<Hospital | null>(null);
 
   const hasMore = displayedHospitals.length < filteredHospitals.length;
@@ -139,10 +136,10 @@ const Hospitallist = ({
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("Link copied to clipboard!");
+      toast.success("Link copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy!", err);
-      alert("Failed to copy link.");
+      toast.error("Failed to copy link.");
     }
   };
 
@@ -372,7 +369,7 @@ const Hospitallist = ({
           <div className='mb-6 flex-grow'>
             <Input
               type='text'
-              placeholder='Search by name'
+              placeholder='Search by name, state or type'
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className='border bg-gray-100 border-gray-300 p-6 rounded-md w-full mx-auto'
@@ -386,10 +383,22 @@ const Hospitallist = ({
           <>
             <ul className='grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 '>
               {displayedHospitals.map((hospital) => (
-                <motion.li
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: hospital.id * 0.2 }}
+                // <motion.li
+                //   initial={{ opacity: 0, y: 50 }}
+                //   animate={{ opacity: 1, y: 0 }}
+                // transition={{ staggerChildren: 0.4 }}
+                // transition={{ delay: hospital.id * 0.1 }}
+                //   key={hospital.id}
+                //   className=' p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out border border-[#04A5BA]'
+                // >
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 0.15,
+                    staggerChildren: 0.2,
+                    delay: 0.2,
+                  }}
                   key={hospital.id}
                   className=' p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out border border-[#04A5BA]'
                 >
@@ -441,7 +450,8 @@ const Hospitallist = ({
                     </div>
                   )}
                   {/* </li> */}
-                </motion.li>
+                </motion.div>
+                // </motion.li>
               ))}
             </ul>
             {/* Load More Button */}

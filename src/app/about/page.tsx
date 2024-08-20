@@ -16,7 +16,7 @@ export default function AboutPage() {
           <motion.h1
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.5 }}
             className='text-5xl font-extrabold mb-4'
           >
             Care Connect
@@ -24,7 +24,7 @@ export default function AboutPage() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
+            transition={{ delay: 0.3, duration: 1 }}
             className='text-2xl font-medium mb-8'
           >
             Finding the right care for you.
