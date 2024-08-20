@@ -253,9 +253,9 @@ const Herosection = () => {
         whileInView='visible'
         viewport={{ once: true }}
       >
-        <div className='max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center lg:py-12 px-4 '>
+        <div className='max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center lg:py-12 px-4 my-4'>
           <motion.div
-            className=' lg:w-2/3 space-y-4 lg:pr-16 pt-3  '
+            className=' lg:w-2/3 space-y-4 lg:pr-16 pt-3 mb-4'
             variants={fadeInUp}
           >
             <h2 className='text-xl md:text-3xl font-bold'>

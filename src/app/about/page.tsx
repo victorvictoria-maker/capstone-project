@@ -10,7 +10,7 @@ export default function AboutPage() {
   return (
     <>
       <Navbar />
-      <div className='min-h-screen bg-gradient-to-b from-[#EFCB68] via-white to-[#456DFF] text-gray-800 p-6'>
+      <div className='min-h-screen  text-gray-800 p-6'>
         {/* Hero Section */}
         <section className='text-center py-16'>
           <motion.h1
@@ -56,6 +56,11 @@ export default function AboutPage() {
               records. This capstone project for Alt School leverages modern web
               technologies to deliver a seamless user experience.
             </p>
+            <div className='mt-2'>
+              <p className='text-[#456DFF]  font-bold'>Admin access</p>
+              <p>Email:- viktohrier01@gmail.com</p>
+              <p>Password:- Vicky02#</p>
+            </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 50 }}
@@ -133,7 +138,7 @@ export default function AboutPage() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             href='https://capstone-project-rouge.vercel.app/hospitals'
-            className='inline-block px-10 py-4 rounded-full bg-[#EFCB68] text-gray-800 font-semibold shadow-lg'
+            className='inline-block px-10 py-4 rounded-full text-white bg-[#456DFF] font-semibold shadow-lg'
           >
             See hospitals
           </motion.a>

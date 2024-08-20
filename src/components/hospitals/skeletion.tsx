@@ -8,7 +8,7 @@ const SkeletonLoader = () => {
     <>
       {/* Hospitals List Skeleton */}
       <ul className='grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
-        {Array(3)
+        {Array(6)
           .fill(null)
           .map((_, index) => (
             <li

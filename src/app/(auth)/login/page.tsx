@@ -16,13 +16,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Suspense, useState, useTransition } from "react";
+import { Suspense, useEffect, useState, useTransition } from "react";
 import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
 import { useRouter, useSearchParams } from "next/navigation";
 import SocialMedia from "@/components/SocialMedia";
 import Image from "next/image";
 import { login } from "@/serveractions/login";
+import { toast } from "react-toastify";
 
 const LoginPageContent = () => {
   const router = useRouter();
@@ -33,6 +34,16 @@ const LoginPageContent = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+
+  const alertUserAboutAdmin = () => {
+    toast.info(
+      "To log in as an admin, check the about project page to get admin access info."
+    );
+  };
+
+  useEffect(() => {
+    alertUserAboutAdmin();
+  }, []);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
